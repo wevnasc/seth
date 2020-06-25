@@ -9,7 +9,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; set font
-(set-default-font "JetBrains Mono-15")
+(set-default-font "JetBrains Mono-16")
 
 ;; change the line spacing
 (setq-default line-spacing 5)
@@ -72,12 +72,10 @@
   :config
   (which-key-mode t))
 
-(use-package auto-complete
+(use-package company
   :ensure t
-  :init
-  (progn
-     (ac-config-default)
-     (global-auto-complete-mode t)))
+  :config
+  (global-company-mode))
 
 (use-package all-the-icons
   :ensure t)
