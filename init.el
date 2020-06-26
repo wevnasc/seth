@@ -121,12 +121,15 @@
 (use-package cider
   :ensure t)
 
+(use-package clojure-mode
+  :ensure t)
+
 (use-package spaceline-all-the-icons
   :ensure t
   :config
   (spaceline-all-the-icons--setup-package-updates) ;; Enable package update indicator
   (spaceline-all-the-icons--setup-git-ahead)       ;; Enable # of commits ahead of upstream in git
-  (spaceline-all-the-icons--setup-neotree))         ;; Enable Neotree mode line
+  (spaceline-all-the-icons--setup-neotree))        ;; Enable Neotree mode line
 
 ;; spaceline configuration
 (use-package spaceline
