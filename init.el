@@ -53,6 +53,9 @@
 ;; Save files backup with ~ in a backup folder
 (setq backup-directory-alist `(("." . "~/.emacs.d/backup")))
 
+;; Add new exec-path
+(add-to-list 'exec-path "/usr/local/bin")
+
 ;; Require and initialize `package`.
 (require 'package)
 (setq package-enable-at-startup nil)
