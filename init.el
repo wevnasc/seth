@@ -9,7 +9,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; set font
-(set-default-font "JetBrains Mono-16")
+(set-default-font "JetBrains Mono-14")
 
 ;; change the line spacing
 (setq-default line-spacing 5)
@@ -88,7 +88,7 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-vibrant t)
+  (load-theme 'doom-molokai t)
   (doom-themes-neotree-config)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
@@ -118,37 +118,24 @@
   :ensure t
   :bind (("C-x t" . 'neotree-toggle)))
 
+;; Languages
+
 (use-package cider
   :ensure t)
 
 (use-package clojure-mode
   :ensure t)
-
-(use-package spaceline-all-the-icons
-  :ensure t
-  :config
-  (spaceline-all-the-icons--setup-package-updates) ;; Enable package update indicator
-  (spaceline-all-the-icons--setup-git-ahead)       ;; Enable # of commits ahead of upstream in git
-  (spaceline-all-the-icons--setup-neotree))        ;; Enable Neotree mode line
-
-;; spaceline configuration
-(use-package spaceline
-  :ensure t
-  :config
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
-
-(use-package spaceline-config
-  :ensure spaceline
-  :config
-  (spaceline-helm-mode 1)
-  (spaceline-emacs-theme))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (projectile use-package))))
+ '(custom-safe-themes
+   (quote
+    ("3a3de615f80a0e8706208f0a71bbcc7cc3816988f971b6d237223b6731f91605" default)))
+ '(package-selected-packages
+   (quote
+    (cider neotree helm-projectile projectile helm magit doom-themes all-the-icons company which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
