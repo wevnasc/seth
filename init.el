@@ -88,7 +88,7 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-molokai t)
+  (load-theme 'doom-nord-light t)
   (doom-themes-neotree-config)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
@@ -118,6 +118,12 @@
   :ensure t
   :bind (("C-x t" . 'neotree-toggle)))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'foo-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 ;; Languages
 
 (use-package cider
@@ -135,7 +141,7 @@
     ("3a3de615f80a0e8706208f0a71bbcc7cc3816988f971b6d237223b6731f91605" default)))
  '(package-selected-packages
    (quote
-    (cider neotree helm-projectile projectile helm magit doom-themes all-the-icons company which-key use-package))))
+    (rainbow-delimiters cider neotree helm-projectile projectile helm magit doom-themes all-the-icons company which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
