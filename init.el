@@ -88,7 +88,7 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-nord-light t)
+  (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
@@ -126,11 +126,40 @@
 
 ;; Languages
 
-(use-package cider
-  :ensure t)
+(defun clj-refactor-setup ()
+  (clj-refactor-mode 1)
+  (yas-minor-mode 1)
+  (cljr-add-keybindings-with-prefix "C-c C-m"))
 
-(use-package clojure-mode
-  :ensure t)
+(use-package clj-refactor
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook #'clj-refactor-setup))
+
+(defun cider-format-and-back () (interactive)
+  (let (p)
+    (setq p (point))
+    (cider-format-buffer)
+    (goto-char p)))
+
+(defun add-clj-format-before-save () (interactive)
+       (add-hook 'before-save-hook
+                 'cider-format-and-back
+                 t t))
+
+(defun add-clj-eval-after-save () (interactive)
+       (add-hook 'after-save-hook
+		 'cider-eval-buffer
+		 t t))
+
+(use-package cider
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook
+            'add-clj-format-before-save)
+  (add-hook 'clojure-mode-hook
+	    'add-clj-eval-after-save))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
