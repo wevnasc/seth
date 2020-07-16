@@ -1,0 +1,230 @@
+* Seth
+
+Seth is a collection of confugration used by me in my daily.
+
+This config includes setup for the follow languages and tools:
+
+ - Clojure
+ - Markdown
+ - Git
+ - Themes
+
+
+** UTF-8
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "UTF-8")
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+#+END_SRC 
+
+** Default screen config
+#+BEGIN_SRC emacs-lisp
+
+;; change the yes or no answer to y or n
+(defalias 'yes-or-no-p 'y-or-n-p)(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; disable startup screen
+(setq inhibit-startup-message t)
+
+;; disable some views
+(tool-bar-mode -1)
+(display-time-mode 1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; start screen in the max size
+(add-hook 'window-setup-hook 'toggle-frame-maximized t)
+
+;; show line numbers
+(global-linum-mode t)
+
+;; show ~ at the end of the file for empty lines
+(setq-default indicate-empty-lines t)
+
+(when (not indicate-empty-lines)
+  (toggle-indicate-empty-lines))
+
+(progn
+    (define-fringe-bitmap 'tilde [0 0 0 113 219 142 0 0] nil nil 'center)
+    (setcdr (assq 'empty-line fringe-indicator-alist) 'tilde))
+
+;; Highlight current line.
+(global-hl-line-mode t)
+#+END_SRC
+
+** Environment
+#+BEGIN_SRC emacs-lisp
+;; Add new exec-path
+(add-to-list 'exec-path "/usr/local/bin")
+#+END_SRC
+
+** Buffer
+#+BEGIN_SRC emacs-lisp
+
+;; if you close a buffer, it remembers where you were in the file
+(setq-default save-place t)
+(setq save-place-file (expand-file-name ".places" user-emacs-directory))
+(save-place-mode 1)
+
+;; Save files backup with ~ in a backup folder
+(setq backup-directory-alist `(("." . "~/.emacs.d/backup")))
+
+#+END_SRC
+
+** File and command search
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-mode t))
+
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+
+(use-package helm
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x b" . helm-mini))
+  :config (helm-mode t))
+
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "C-x p") projectile-command-map)
+  (projectile-mode t))
+
+(use-package helm-projectile
+  :ensure t
+  :config
+  (helm-projectile-on))
+
+(use-package neotree
+  :ensure t
+  :bind (("C-x t" . 'neotree-toggle)))
+#+END_SRC
+
+** Font and themes
+#+BEGIN_SRC emacs-lisp
+(set-default-font "JetBrains Mono-14")
+(setq-default line-spacing 5)
+(global-prettify-symbols-mode +1)
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package doom-themes
+  :ensure t
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-vibrant t)
+  (doom-themes-neotree-config)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
+#+END_SRC 
+
+** Git
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t)
+#+END_SRC
+
+** Code helpers tools
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
+(use-package flycheck-clj-kondo
+  :ensure t
+  :config
+  (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
+    (setq flycheck-checkers (cons checker (delq checker flycheck-checkers)))))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'foo-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
+** Clojure
+#+BEGIN_SRC emacs-lisp
+(defun cider-format-and-back () (interactive)
+  (let (p)
+    (setq p (point))
+    (cider-format-buffer)
+    (goto-char p)))
+
+(defun add-clj-format-before-save () (interactive)
+       (add-hook 'before-save-hook
+                 'cider-format-and-back
+                 t t))
+
+(use-package cider
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook
+            'add-clj-format-before-save)
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (setq cider-repl-use-pretty-printing t))
+
+(use-package clojure-mode
+  :ensure t
+  :config
+  (require 'flycheck-clj-kondo))
+#+END_SRC
+
+** LSP
+#+BEGIN_SRC emacs-lisp
+(setq lsp-keymap-prefix "C-c l")
+
+(use-package lsp-mode
+    :hook ((clojure-mode . lsp)
+	   (clojurec-mode . lsp)
+	   (clojurescript-mode . lsp)
+	   (lsp-mode . lsp-enable-which-key-integration))
+    :bind (("M-." . lsp-find-definition))
+    :commands lsp
+    :config
+    (setenv "PATH" (concat "/usr/local/bin" path-separator (getenv "PATH")))
+    (dolist (m '(clojure-mode
+		 clojurec-mode
+		 clojurescript-mode
+		 clojurex-mode))
+      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+    (setq lsp-enable-indentation nil
+	  lsp-clojure-server-command '("bash" "-c" "clojure-lsp")))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+
+(use-package helm-lsp
+  :ensure t
+  :commands helm-lsp-workspace-symbol)
+#+END_SRC
+
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+#+END_SRC
