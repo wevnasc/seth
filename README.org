@@ -54,12 +54,6 @@ This config includes setup for the follow languages and tools:
 (global-hl-line-mode t)
 #+END_SRC
 
-** Environment
-#+BEGIN_SRC emacs-lisp
-;; Add new exec-path
-(add-to-list 'exec-path "/usr/local/bin")
-#+END_SRC
-
 ** Buffer
 #+BEGIN_SRC emacs-lisp
 
@@ -169,6 +163,8 @@ This config includes setup for the follow languages and tools:
                  t t))
 
 (use-package cider
+  :init 
+  (add-to-list 'exec-path "/usr/local/bin")
   :ensure t
   :config
   (add-hook 'clojure-mode-hook
@@ -184,26 +180,45 @@ This config includes setup for the follow languages and tools:
   (require 'flycheck-clj-kondo))
 #+END_SRC
 
+** Elixir
+#+BEGIN_SRC emacs-lisp
+(use-package elixir-mode
+  :ensure t
+  :init (add-hook 'elixir-mode-hook
+            (lambda ()
+              (push '(">=" . ?\u2265) prettify-symbols-alist)
+              (push '("<=" . ?\u2264) prettify-symbols-alist)
+              (push '("!=" . ?\u2260) prettify-symbols-alist)
+              (push '("==" . ?\u2A75) prettify-symbols-alist)
+              (push '("=~" . ?\u2245) prettify-symbols-alist)
+              (push '("<-" . ?\u2190) prettify-symbols-alist)
+              (push '("->" . ?\u2192) prettify-symbols-alist)
+              (push '("<-" . ?\u2190) prettify-symbols-alist)
+              (push '("|>" . ?\u25B7) prettify-symbols-alist))))
+#+END_SRC
 ** LSP
 #+BEGIN_SRC emacs-lisp
 (setq lsp-keymap-prefix "C-c l")
 
 (use-package lsp-mode
+    :init
+    (add-to-list 'exec-path "~/lsp/elixir-ls/release")
     :hook ((clojure-mode . lsp)
 	   (clojurec-mode . lsp)
 	   (clojurescript-mode . lsp)
+           (elixir-mode . lsp)
 	   (lsp-mode . lsp-enable-which-key-integration))
     :bind (("M-." . lsp-find-definition))
     :commands lsp
     :config
+    (setenv "PATH" (concat "~/.asdf/shims" path-separator (getenv "PATH")))
     (setenv "PATH" (concat "/usr/local/bin" path-separator (getenv "PATH")))
     (dolist (m '(clojure-mode
 		 clojurec-mode
 		 clojurescript-mode
 		 clojurex-mode))
-      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
-    (setq lsp-enable-indentation nil
-	  lsp-clojure-server-command '("bash" "-c" "clojure-lsp")))
+      (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))
+      (add-to-list 'lsp-language-id-configuration `(elixir-mode . "elixir"))))
 
 (use-package lsp-ui
   :ensure t
