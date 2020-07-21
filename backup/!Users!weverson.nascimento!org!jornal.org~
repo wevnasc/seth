@@ -1,0 +1,46 @@
+* Day to Day Guide
+** Trackle now
+*** DONE Add bill installment deeplink in facade
+*** DONE Read about tombamento architeture
+*** DONE Read mobile documentation about flutter in nubank
+*** TODO Add tax_reate to financing contract in facade 
+
+* Flutter dicovery
+** Why the Nubank started to use flutter? 
+   The flutter started to be used on Nubank to give us a fast way to developer feature to both plataforms using the same codebase.
+   The key beneficities of this approuch is:
+   - The app comes to be more consistent between plataforms.
+   - We can use the same languages and common features
+   - the learning curve is more smooth
+   
+** The tools used to create apps with flutter
+   - Nuds: The nuds is a package created by the nubanks with a lot of components that follow the System Design from nubank
+     Today we hava a app in the play store for test and try theses components.
+
+   - Monocli: Monocli is a tool similar to nucli but focused only on mobile the idea is to have some commands to help the engineers in your day to day.
+
+   - Bors: is a CI tool, basicaly today we a have mono repository for mobile with all plataforms inside, and we receive a lot of PRs per day, the bors
+     do the management from this PRs. For example the bors there is the capacity to merge more that one PR per time.
+
+** The Architeture
+   
+   - Navigation == Routes
+     This layer is reposible to know how each screen will be appresented, what trasition animation will be used 
+     and which screen will be presensented and when.
+
+   - domain == logic
+     The domain layers is reposible for business logic, we made the use of use cases pattern to apply this logics following the clean architeture. 
+
+   - data == models/schemata/diplomata
+     the is the layers where we can access remote data sources or local data sources
+
+   - presentation
+     Widgets and presentation logic
+
+   - bloc (Bloc Logic Component)
+     this component separete the presentation layer from the business logic
+     the idea is that the block layers recevei events from the uses make business logic and return a new state for the screen
+     this state basicaly represents how the screen will looks like.
+** Chanels
+** Current features in Flutter
+

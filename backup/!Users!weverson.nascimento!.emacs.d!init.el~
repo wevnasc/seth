@@ -23,7 +23,7 @@
     ("3a3de615f80a0e8706208f0a71bbcc7cc3816988f971b6d237223b6731f91605" default)))
  '(package-selected-packages
    (quote
-    (flycheck-credo helm-lsp rainbow-delimiters cider neotree helm-projectile projectile helm magit doom-themes all-the-icons company which-key use-package))))
+    (helm-lsp rainbow-delimiters cider neotree helm-projectile projectile helm magit doom-themes all-the-icons company which-key use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

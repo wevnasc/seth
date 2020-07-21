@@ -1,26 +1,8 @@
-* Seth
-
-Seth is a collection of confugration used by me in my daily.
-
-This config includes setup for the follow languages and tools:
-
- - Clojure
- - Markdown
- - Git
- - Themes
-
-
-** UTF-8
-#+BEGIN_SRC emacs-lisp
 (set-language-environment "UTF-8")
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
-#+END_SRC 
-
-** Default screen config
-#+BEGIN_SRC emacs-lisp
 
 ;; change the yes or no answer to y or n
 (defalias 'yes-or-no-p 'y-or-n-p)(defalias 'yes-or-no-p 'y-or-n-p)
@@ -52,10 +34,6 @@ This config includes setup for the follow languages and tools:
 
 ;; Highlight current line.
 (global-hl-line-mode t)
-#+END_SRC
-
-** Buffer
-#+BEGIN_SRC emacs-lisp
 
 ;; if you close a buffer, it remembers where you were in the file
 (setq-default save-place t)
@@ -65,15 +43,9 @@ This config includes setup for the follow languages and tools:
 ;; Save files backup with ~ in a backup folder
 (setq backup-directory-alist `(("." . "~/.emacs.d/backup")))
 
-#+END_SRC
-
-** Environment
-#+BEGIN_SRC emacs-lisp
 ;; Add new exec-path
 (add-to-list 'exec-path "/usr/local/bin")
-#+END_SRC
-** File and command search
-#+BEGIN_SRC emacs-lisp
+
 (use-package which-key
   :ensure t
   :diminish which-key-mode
@@ -106,10 +78,7 @@ This config includes setup for the follow languages and tools:
 (use-package neotree
   :ensure t
   :bind (("C-x t" . 'neotree-toggle)))
-#+END_SRC
 
-** Font and themes
-#+BEGIN_SRC emacs-lisp
 (set-default-font "JetBrains Mono-14")
 (setq-default line-spacing 5)
 (global-prettify-symbols-mode +1)
@@ -126,16 +95,10 @@ This config includes setup for the follow languages and tools:
   (doom-themes-neotree-config)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
-#+END_SRC 
 
-** Git
-#+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t)
-#+END_SRC
 
-** Code helpers tools
-#+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
   :init
@@ -188,10 +151,7 @@ This config includes setup for the follow languages and tools:
   :config
   (add-hook 'foo-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-#+END_SRC
 
-** Clojure
-#+BEGIN_SRC emacs-lisp
 (defun cider-format-and-back () (interactive)
   (let (p)
     (setq p (point))
@@ -219,10 +179,7 @@ This config includes setup for the follow languages and tools:
   :ensure t
   :config
   (require 'flycheck-clj-kondo))
-#+END_SRC
 
-** Elixir
-#+BEGIN_SRC emacs-lisp
 (use-package elixir-mode
   :ensure t
   :mode (("\\.ex\\'" . elixir-mode)
@@ -239,9 +196,6 @@ This config includes setup for the follow languages and tools:
   (setq alchemist-execute-command "~/.asdf/shims/elixir")
   (setq alchemist-compile-command "~/.asdf/shims/elixirc"))
 
-#+END_SRC
-** LSP
-#+BEGIN_SRC emacs-lisp
 (setq lsp-keymap-prefix "C-c l")
 
 (use-package lsp-mode
@@ -275,10 +229,7 @@ This config includes setup for the follow languages and tools:
 (use-package helm-lsp
   :ensure t
   :commands helm-lsp-workspace-symbol)
-#+END_SRC
 
-** Markdown
-#+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -286,4 +237,3 @@ This config includes setup for the follow languages and tools:
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-#+END_SRC
