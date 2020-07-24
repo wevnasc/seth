@@ -105,7 +105,11 @@ This config includes setup for the follow languages and tools:
 
 (use-package neotree
   :ensure t
-  :bind (("C-x t" . 'neotree-toggle)))
+  :bind (("C-x t" . 'neotree-toggle))
+  :config 
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq neo-autorefresh nil)
+  (setq neo-smart-open t))
 #+END_SRC
 
 ** Font and themes
@@ -122,7 +126,7 @@ This config includes setup for the follow languages and tools:
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-vibrant t)
+  (load-theme 'doom-peacock t)
   (doom-themes-neotree-config)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
